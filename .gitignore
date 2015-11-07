@@ -1,0 +1,23 @@
+# Base configuration
+wp-config.php
+wp-content/uploads/*
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/*
+wp-content/cache/supercache/*
+wp-content/cache/
+wp-content/backups/
+sitemap.xml
+sitemap.xml.gz
+
+# Ignore specific file types
+*.log
+
+# Ignore galleries
+wp-content/gallery/*
+
+# Ignore default themes
+wp-content/themes/twenty*/
