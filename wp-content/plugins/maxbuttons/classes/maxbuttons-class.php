@@ -337,7 +337,7 @@ class maxButtonsPlugin
  
 		wp_enqueue_script('maxbuttons-colorpicker-js', $this->plugin_url . 'js/colpick/colpick.js', array('jquery'), null, true);
 		wp_enqueue_script('maxbuttons-modal', $this->plugin_url . 'js/leanModal/jquery.leanModal.min.js', array('jquery'), null, true);
-		wp_enqueue_script('maxbutton-admin', $this->plugin_url . 'js/maxbuttons-admin.js', array('jquery', 'jquery-ui-draggable', 'maxbuttons-tabs'),null, true); 
+		wp_enqueue_script('maxbutton-admin', $this->plugin_url . 'js/maxbuttons-admin.js', array('jquery', 'jquery-ui-draggable', 'maxbuttons-tabs','maxbuttons-modal' ),null, true); 
 		wp_enqueue_script('maxbutton-js-init', $this->plugin_url . 'js/init.js', array('maxbutton-admin', 'maxcollections'),null, true);
 		wp_enqueue_script('maxbuttons-tabs', $this->plugin_url . 'js/maxtabs.js', array('jquery'),null, true); 
 

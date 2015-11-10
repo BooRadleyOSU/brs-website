@@ -20,11 +20,7 @@ maxAdmin.prototype = {
 maxAdmin.prototype.init = function () {
 		//var colorUpdateTime = true; 
 		this.button_id = $('input[name="button_id"]').val(); 
-			
-		// init modal
-		$("#view_icons_modal").leanModal({closeButton: ".modal_close"});
-		$("#maxbuttons a[rel*=leanModal]").leanModal( { closeButton: ".modal_close" }); // merge this with mbfree js
- 		
+			 		
  		// Prevents the output button from being clickable (also in admin list view )	
 		$(document).on('click', ".maxbutton-preview", function(e) { e.preventDefault(); });		
 
@@ -52,11 +48,15 @@ maxAdmin.prototype.init = function () {
 		****
 		 ### After this only init for button main edit screen 
 		****
-		
+
 		*/
 		if ($('#new-button-form').length == 0) 
 			return; 
-			
+
+		// init modal
+		$("#view_icons_modal").leanModal({closeButton: ".modal_close"});
+		$("#maxbuttons a[rel*=leanModal]").leanModal( { closeButton: ".modal_close" }); 
+					
 		if (this.button_id > 0) {
 			$("#maxbuttons .mb-message").show();
 		} 

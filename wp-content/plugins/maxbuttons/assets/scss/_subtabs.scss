@@ -59,7 +59,7 @@ h2.sub-tabs, h2.submit-tab {
 	
 	@include border-radius(0,0,0,0);
 	
-	.title:first-of-type { 
+	> .title:nth-of-type(1) { 
 		@extend .button-bar;
 		button { top: 0; } 
 		.right { float: right; }

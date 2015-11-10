@@ -84,12 +84,21 @@ if (isset($_POST["replace"]) && check_admin_referer('mb_bulk_edit', 'bulk_edit')
 <?php
 $admin = MB()->getClass('admin'); 
 $page_title = __("Settings","maxbuttons"); 
-$admin->get_header(array("title" => $page_title) );
+$admin->get_header(array("tabs_active" => true, "title" => $page_title) );
 ?>
  
+<div class="mb_tab"> <!-- first tab ---> 
+            <div class="title">
+		        <span class="dashicons dashicons-list-view"></span> 
+				<span class='title'><?php _e('Settings', 'maxbuttons') ?></span>
+            </div>
+             
        <form method="post" action="options.php">
+       
             <div class="option-container">
-                <div class="title"><?php _e('Settings', 'maxbuttons') ?></div>
+            
+
+                
                 <div class="inside">
                     <div class="option-design">
 
@@ -155,8 +164,16 @@ $admin->get_header(array("title" => $page_title) );
         	</div>
       </form>
       
+</div> <!-- /first tab --->      
+<div class="mb_tab"><!-- advanced tab --> 
+              <div class="title">
+		        <span class="dashicons dashicons-list-view"></span> 
+				<span class='title'><?php _e('Advanced', 'maxbuttons') ?></span>
+            </div>   
+                 
         <form method="POST">       
       <div class="option-container">
+ 
               	<input type="hidden" name="remigrate" value="true" />
       	<div class="title"><?php _e("Retry Database migration","maxbuttons"); ?></div>
       	<div class="inside"><p><?php _e("In case the upgrade functionality failed to move your old buttons from MaxButtons before version 3, you can do so here manually. <strong>Attention</strong>  The new database table (maxbuttonsv3) *must* be empty, and the old database table *must* contain buttons otherwise this will not run. Run this <strong>at your own risk</strong> - it is strongly advised to make a backup before doing so.", "maxbuttons"); ?></p>	
@@ -212,7 +229,7 @@ $admin->get_header(array("title" => $page_title) );
       	<div class="inside"  >
       	<p><strong><?php _e("Using Bulk editor MAY and probably WILL destroy your buttons. In case you wish to prevent this - please BACKUP all your buttons before proceeding!","maxbuttons"); ?></strong></p>	
       	
-      	<div class="option"><label><?php _e("Field", "maxbuttons"); ?> </label> <?php echo maxButtonsUtils::selectify("replace_field", $allfields, 'url'); ?></div>	
+      	<div class="option"><label><?php _e("Field", "maxbuttons"); ?> </label> <?php echo maxUtils::selectify("replace_field", $allfields, 'url'); ?></div>	
       
       	<div class="option"><label><?php _e("Search","maxbuttons"); ?> </label> <input type="text" name="search" value=""></div>
       	<div class="option"><label><?php _e("Replace","maxbuttons"); ?> </label> <input type="text" name="replace" value=""></div>
@@ -229,11 +246,9 @@ $admin->get_header(array("title" => $page_title) );
 		<?php else: ?>  		
   		<a href="<?php echo add_query_arg('show_replace',true); ?>"><?php _e("I need to bulk edit something","maxbuttons"); ?></a>
   		<?php endif; ?> 
-  		
-
-       
-    		
+ 
         </div>
+ </div> <!-- advanced tab -->        
         <div class="ad-wrap">
 		<?php do_action("mb-display-ads"); ?> 
     </div>

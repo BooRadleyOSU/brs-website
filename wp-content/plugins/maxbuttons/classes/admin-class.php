@@ -202,8 +202,9 @@ class maxButtonsAdmin
 				</div>";
 		echo "<div id='maxbuttons'><div class='preview-buttons'>";
 		
-		if (count($buttons == 0)) 
+		if (count($buttons) == 0) 
 		{
+ 
 			echo "<p><strong>" . __("You didn't add any buttons yet!","maxbuttons") . "</strong></p>"; 
 			echo "<P>" . sprintf(__("Click %shere%s to add one", "maxbuttons"), 
 					"<a href='/wp-admin/admin.php?page=maxbuttons-controller&action=edit' target='_blank'>", "</a>") . "</strong></p>"; 

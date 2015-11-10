@@ -3,7 +3,7 @@ Contributors: maxfoundry, arcware, johnbhartley, basszje
 Tags: icon, icons, link, plugin, seo, wordpress button plugin, wordpress button generator, css3 button plugin, gradient, css3 button generator, css wordpress button, css3 wordpress button, social button, simple social buttons, wordpress buttons plugin, wp button creator, wordpress button, button generator, create button icon, font awesome, fontawesome, responsive, responsive buttons, google, google event tracking, google analytics, facebook, facebook icon, facebook like, floating social media, follow, icon, icons, Like, linkedin, linkedin icon, sharing, sharing buttons, social media, css button generator, social media icons, social media plugin, social media sharing, social profiles, social share, tweet, twitter, tweet button, tweet 
 Requires at least: 3.8
 Tested up to: 4.3.1
-Stable tag: 4.01
+Stable tag: 4.02
 
 WordPress button plugin so powerful and easy to use anyone to create beautiful buttons and social share icons. 
 
@@ -168,6 +168,12 @@ Enable the container option and set the alignment property to either "display: i
 
 
 == Changelog ==
+
+= 4.02 = 
+
+* Fixed message in button inserter incorrectly stating no buttons are found..
+* Javascript hardening to prevent conflicts in rare cases
+* Better Settings interface
 
 = 4.01 = 
 
