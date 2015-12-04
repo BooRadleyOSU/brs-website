@@ -43,7 +43,7 @@ class Grouped_Calendars extends Feed {
 		parent::__construct( $calendar );
 
 		$this->type = 'grouped-calendars';
-		$this->name = __( 'Grouped Calendars', 'google-calendar-events' );
+		$this->name = __( 'Grouped Calendar', 'google-calendar-events' );
 
 		if ( $this->post_id > 0 ) {
 			$this->set_source();
@@ -83,14 +83,14 @@ class Grouped_Calendars extends Feed {
 			if ( $categories && is_array( $categories ) ) {
 
 				$tax_query = array(
-					'taxonomy' => 'events_feed_category',
+					'taxonomy' => 'calendar_category',
 					'field'    => 'term_id',
 					'terms'    => array_map( 'absint', $categories ),
 				);
 
 				$calendars = get_posts( array(
 					'post_type' => 'calendar',
-					'tax_query' => $tax_query,
+					'tax_query' => array( $tax_query ),
 					'nopaging'  => true,
 					'fields'    => 'ids',
 				) );

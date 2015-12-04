@@ -1,19 +1,16 @@
 <?php
 /**
  * Plugin Name: Simple Calendar
- * Plugin URI:  https://wordpress.org/plugins/google-calendar-events/
- * Description: Show off your Google calendar in grid (month) or list view, in a post, page or widget, and in a style that matches your site.
- *
- * Version:     3.0.1
- *
+ * Plugin URI:  https://simplecalendar.io
+ * Description: Add Google Calendar events to your WordPress site in minutes. Beautiful calendar displays. Fully responsive.
+ * Version:     3.0.8
  * Author:      Moonstone Media
- * Author URI:  http://moonstonemediagroup.com
- *
+ * Author URI:  https://simplecalendar.io
  * Text Domain: google-calendar-events
  * Domain Path: /languages
  *
  * @package     SimpleCalendar
- * @copyright   2014-2015 Moonstone Media/Phil Derksen. All rights reserved.
+ * @copyright   2015 Moonstone Media/Phil Derksen. All rights reserved.
  */
 
 // Exit if accessed directly.
@@ -32,7 +29,7 @@ if ( version_compare( PHP_VERSION, '5.3.0' ) === -1 ) {
 $this_plugin_path = trailingslashit( dirname( __FILE__ ) );
 $this_plugin_dir  = plugin_dir_url( __FILE__ );
 $this_plugin_constants = array(
-	'SIMPLE_CALENDAR_VERSION'   => '3.0.1',
+	'SIMPLE_CALENDAR_VERSION'   => '3.0.8',
 	'SIMPLE_CALENDAR_MAIN_FILE' => __FILE__,
 	'SIMPLE_CALENDAR_URL'       => $this_plugin_dir,
 	'SIMPLE_CALENDAR_ASSETS'    => $this_plugin_dir  . 'assets/',
@@ -50,8 +47,12 @@ $this_plugin_checks = new WP_Requirements(
 	'Simple Calendar',
 	plugin_basename( __FILE__ ),
 	array(
-		'PHP'       => '5.3.2',
+		'PHP'       => '5.3.0',
 		'WordPress' => '4.0.0',
+		'Extensions' => array(
+			'curl',
+			'mbstring',
+		)
 	)
 );
 if ( $this_plugin_checks->pass() === false ) {

@@ -141,7 +141,21 @@ class Assets {
 	 */
 	public function load() {
 
+		if ( $this->always_enqueue ) {
+			$scripts = $this->get_default_scripts();
+			$styles  = $this->get_default_styles();
+
+			$this->scripts = apply_filters( 'simcal_front_end_scripts', $scripts, $this->min );
+			$this->styles  = apply_filters( 'simcal_front_end_styles', $styles, $this->min );
+
+			$this->load_scripts( $this->scripts );
+			$this->load_styles( $this->styles );
+
+			return;
+		}
+
 		$id = 0;
+		$cal_id = array();
 		$scripts = $styles = array();
 
 		if ( is_singular() ) {
@@ -151,6 +165,12 @@ class Assets {
 			if ( 'calendar' == $post_type ) {
 
 				$id = get_queried_object_id();
+
+				$view = simcal_get_calendar_view( $id );
+				if ( $view instanceof Calendar_View ) {
+					$scripts[] = $view->scripts( $this->min );
+					$styles[]  = $view->styles( $this->min );
+				}
 
 			} else {
 
@@ -164,7 +184,7 @@ class Assets {
 						foreach ( $matches as $shortcode ) {
 							if ( 'calendar' === $shortcode[2] || 'gcal' === $shortcode[2] ) {
 								$atts = shortcode_parse_atts( $shortcode[3] );
-								$id   = isset( $atts['id'] ) ? intval( $atts['id'] ) : 0;
+								$cal_id[]   = isset( $atts['id'] ) ? intval( $atts['id'] ) : 0;
 							}
 						}
 					}
@@ -172,26 +192,42 @@ class Assets {
 			}
 		}
 
-		if ( $id > 0 ) {
+		foreach( $cal_id as $i ) {
 
-			$view = simcal_get_calendar_view( $id );
+			if ( $i > 0 ) {
 
-			if ( $view instanceof Calendar_View ) {
-				$scripts = $view->scripts( $this->min );
-				$styles  = $view->styles( $this->min );
+				$view = simcal_get_calendar_view( $i );
+
+				if ( $view instanceof Calendar_View ) {
+					$scripts[] = $view->scripts( $this->min );
+					$styles[] = $view->styles( $this->min );
+				}
 			}
-		} else if ( $this->always_enqueue ) {
-			$scripts = $this->get_default_scripts();
-			$styles  = $this->get_default_styles();
 		}
 
 		$this->get_widgets_assets();
 
 		$this->scripts = apply_filters( 'simcal_front_end_scripts', $scripts, $this->min );
-		$this->load_scripts( $this->scripts );
+
+		// First check if there is a multi-dimensional array of scripts
+		if ( isset( $this->scripts[0] ) ) {
+			foreach ( $this->scripts as $script ) {
+				$this->load_scripts ( $script );
+			}
+		} else {
+			$this->load_scripts( $this->scripts );
+		}
 
 		$this->styles = apply_filters( 'simcal_front_end_styles', $styles, $this->min );
-		$this->load_styles( $this->styles );
+
+		// First check if there is a multi-dimensional array of styles
+		if ( isset( $this->styles[0] ) ) {
+			foreach( $this->styles as $style ) {
+				$this->load_styles( $style );
+			}
+		} else {
+			$this->load_styles( $this->styles );
+		}
 	}
 
 	/**

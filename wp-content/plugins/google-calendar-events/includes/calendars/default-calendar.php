@@ -51,6 +51,14 @@ class Default_Calendar extends Calendar {
 	public $event_bubble_trigger = 'click';
 
 	/**
+	 * Hide navigation buttons.
+	 *
+	 * @access public
+	 * @var bool
+	 */
+	public $compact_list = false;
+
+	/**
 	 * Grouped list type.
 	 *
 	 * @access public
@@ -179,7 +187,14 @@ class Default_Calendar extends Calendar {
 			// List range.
 			$this->group_type = esc_attr( get_post_meta( $this->id, '_default_calendar_list_range_type', true ) );
 			$this->group_span = max( absint( get_post_meta( $this->id, '_default_calendar_list_range_span', true ) ), 1 );
+
+			// Make the list look more compact.
+			if ( 'yes' == get_post_meta( $this->id, '_default_calendar_compact_list', true ) ) {
+				$this->compact_list = true;
+			}
+
 		}
+
 	}
 
 	/**
@@ -202,8 +217,18 @@ class Default_Calendar extends Calendar {
 					if ( $event instanceof Event ) {
 						if ( false !== $event->multiple_days ) {
 							$days = $event->multiple_days;
-							for ( $d = 1; $d <= $days; $d++ ) {
-								$new_events[ intval( $event->start + ( $d * DAY_IN_SECONDS ) - 1 ) ][] = $event;
+
+							if ( $days == 1 ) {
+								$new_events[ intval( $event->start + ( DAY_IN_SECONDS ) - 1 ) ][] = $event;
+							} else {
+
+								if ( ! empty( $event->whole_day ) ) {
+									$days--;
+								}
+
+								for ( $d = 1; $d <= $days; $d++ ) {
+									$new_events[ intval( $event->start + ( $d * DAY_IN_SECONDS ) - 1 ) ][] = $event;
+								}
 							}
 						}
 					}

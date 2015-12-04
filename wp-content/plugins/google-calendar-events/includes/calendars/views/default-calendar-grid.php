@@ -182,7 +182,7 @@ class Default_Calendar_Grid implements Calendar_View {
 				<thead class="simcal-calendar-head">
 					<tr>
 						<?php if ( ! $calendar->static ) { ?>
-							<th class="simcal-nav" colspan="1">
+							<th class="simcal-nav simcal-prev-wrapper" colspan="1">
 								<button class="simcal-nav-button simcal-month-nav simcal-prev" title="<?php _e( 'Previous Month', 'google-calendar-events' ); ?>"><i class="simcal-icon-left"></i></button>
 							</th>
 						<?php } ?>
@@ -213,7 +213,7 @@ class Default_Calendar_Grid implements Calendar_View {
 							?>
 						</th>
 						<?php if ( ! $calendar->static ) { ?>
-							<th class="simcal-nav" colspan="1">
+							<th class="simcal-nav simcal-next-wrapper" colspan="1">
 								<button class="simcal-nav-button simcal-month-nav simcal-next" title="<?php _e( 'Next Month', 'google-calendar-events' ); ?>"><i class="simcal-icon-right"></i></button>
 							</th>
 						<?php } ?>
@@ -350,7 +350,9 @@ class Default_Calendar_Grid implements Calendar_View {
 		// Void days in first week.
 		for ( $a = $week_starts; $a < $b; $a++ ) :
 
-			echo '<td class="simcal-day simcal-day-void"></td>';
+			$last_void_day_class = ( $a === ( $b - 1 ) ) ? 'simcal-day-void-last' : '';
+
+			echo '<td class="simcal-day simcal-day-void ' . $last_void_day_class . '"></td>' . "\n";
 
 			// Reset day of the week count (sun, 0 - sat, 6).
 			if ( $week_day === 6 ) {
@@ -387,7 +389,7 @@ class Default_Calendar_Grid implements Calendar_View {
 			// Print events for the current day in loop, if found any.
 			if ( isset( $day_events[ $day ] ) ) :
 
-				$list_events = '<ul class="simcal-events"' . $border_style . '>';
+				$list_events = '<ul class="simcal-events">';
 
 				foreach ( $day_events[ $day ] as $event ) :
 
@@ -453,10 +455,8 @@ class Default_Calendar_Grid implements Calendar_View {
 
 			else :
 
-				$border_style = ! empty( $the_color ) ? $border_style : '';
-
 				// Empty cell for day with no events.
-				$list_events = '<span class="simcal-no-events"' . $border_style . '></span>';
+				$list_events = '<span class="simcal-no-events"></span>';
 
 			endif;
 
@@ -474,7 +474,7 @@ class Default_Calendar_Grid implements Calendar_View {
 				$day_style = '';
 			}
 
-			echo "\t" . '<div>' . "\n";
+			echo "\t" . '<div' . $border_style . '>' . "\n";
 			echo "\t\t" . '<span class="simcal-day-label simcal-day-number"' . $day_style . '>' . $day . '</span>' . "\n";
 			echo "\t\t" . $list_events . "\n";
 			echo "\t\t";
@@ -518,18 +518,15 @@ class Default_Calendar_Grid implements Calendar_View {
 		endfor;
 
 		// Void days at the end of the month.
-		$remainder_days = 6 - $days_in_row;
-		if ( $remainder_days >= 1 ) {
+		$remainder_days = ( 6 - $days_in_row );
 
-			for ( $i = 0; $i <= $remainder_days; $i ++ ) {
+		for ( $i = 0; $i <= $remainder_days; $i ++ ) {
 
-				echo '<td class="simcal-day simcal-day-void"></td>' . "\n";
+			$last_void_day_class = ( $i == $remainder_days ) ? 'simcal-day-void-last' : '';
 
-				$week_day++;
-			}
+			echo '<td class="simcal-day simcal-day-void ' . $last_void_day_class . '"></td>' . "\n";
 
-		} elseif ( $days_in_row === 6 ) {
-			echo '<td class="simcal-day simcal-day-void"></td>' . "\n";
+			$week_day++;
 		}
 
 		echo "\t" . '</tr>' . "\n";

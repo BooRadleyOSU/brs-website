@@ -158,7 +158,12 @@
   .simcal-default-calendar .simcal-nav-button:disabled {
     cursor: default; }
     .simcal-default-calendar .simcal-nav-button:disabled:hover {
-      margin: 0; }
+      margin: 0;
+      padding: 0; }
+
+.simcal-default-calendar .simcal-events {
+  list-style: none;
+  margin-left: 0; }
 
 .simcal-default-calendar .simcal-events-toggle {
   border: 0;
@@ -169,44 +174,6 @@
     border: 0;
     box-shadow: none;
     outline: none; }
-
-.simcal-default-calendar.simcal-event-bubble {
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
-  .simcal-default-calendar.simcal-event-bubble:before {
-    border-bottom: 5px solid #fff;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    content: ' ';
-    display: block;
-    font-size: 0;
-    height: 0;
-    left: 50%;
-    line-height: 0;
-    margin: -5px 0 0 -5px;
-    position: absolute;
-    width: 0;
-    z-index: 16000; }
-  .simcal-default-calendar.simcal-event-bubble:after {
-    border-bottom: 5px solid rgba(0, 0, 0, 0.18);
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    content: ' ';
-    display: block;
-    font-size: 0;
-    height: 0;
-    left: 50%;
-    line-height: 0;
-    margin: -6px 0 0 -5px;
-    position: absolute;
-    top: 0;
-    width: 0;
-    z-index: 14999; }
-  .simcal-default-calendar.simcal-event-bubble .simcal-event {
-    list-style: none; }
-  .simcal-default-calendar.simcal-event-bubble .simcal-events {
-    margin: 0; }
 
 .simcal-default-calendar ul.simcal-attachments,
 .simcal-default-calendar ul.simcal-attendees {
@@ -320,6 +287,8 @@
       width: 60%; }
     .simcal-default-calendar-list .simcal-calendar-head .simcal-current span {
       display: inline-block; }
+    .simcal-default-calendar-list .simcal-calendar-head .simcal-hide-header {
+      visibility: hidden; }
   .simcal-default-calendar-list dl.simcal-month {
     margin-bottom: 10px;
     padding: 0 10px 10px; }
@@ -343,7 +312,8 @@
     font-size: .84em;
     line-height: 1.5;
     overflow: hidden; }
-    .simcal-default-calendar-list .simcal-event-details p {
+    .simcal-default-calendar-list .simcal-event-details p,
+    .simcal-default-calendar-list .simcal-event-details .simcal-event-description {
       margin: 0 0 1em; }
   .simcal-default-calendar-list .simcal-events-toggle {
     display: inline-block;
@@ -352,3 +322,5 @@
     background-color: rgba(0, 0, 0, 0.1); }
   .simcal-default-calendar-list.simcal-default-calendar-dark .simcal-events-toggle {
     background-color: rgba(255, 255, 255, 0.1); }
+  .simcal-default-calendar-list .simcal-calendar-list-compact .simcal-calendar-head .simcal-nav h3 {
+    font-size: 1em; }

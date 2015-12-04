@@ -132,7 +132,7 @@ class Welcome {
 			<a href="<?php echo admin_url( 'edit.php?post_type=calendar' ); ?>"
 			   class="button button-primary"
 				><?php _e( 'Calendars', 'google-calendar-events' ); ?></a>
-			<a href="<?php echo admin_url( 'admin.php?page=simple-calendar_settings' ); ?>"
+			<a href="<?php echo esc_url( add_query_arg( 'page', 'simple-calendar_settings', admin_url( 'admin.php' ) ) ); ?>"
 			   class="button button-primary"
 				><?php _e( 'Settings', 'google-calendar-events' ); ?></a>
 			<a href="<?php echo simcal_ga_campaign_url( simcal_get_url( 'add-ons' ), 'core-plugin', 'welcome-page' ); ?>"
@@ -164,9 +164,8 @@ class Welcome {
 		<div class="about-text">
 			<?php
 
-			if ( 'fresh' == $this->install ) {
-				$message = __( 'Thanks, all done!', 'google-calendar-events' );
-			} elseif ( 'update' == $this->install ) {
+			// Difference message if updating vs fresh install.
+			if ( 'update' == $this->install ) {
 				$message = __( 'Thanks for updating to the latest version!', 'google-calendar-events' );
 			} else {
 				$message = __( 'Thanks for installing!', 'google-calendar-events' );

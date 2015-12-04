@@ -1,9 +1,9 @@
-=== Simple Calendar - formerly Google Calendar Events ===
+=== Simple Calendar (aka Google Calendar Events) ===
 Contributors: moonstonemedia, pderksen, nickyoung87, nekojira, rosshanney
 Tags: calendar, calendars, calendar manager, custom calendar, custom calendars, event, events, events feed, google calendar, google
 Requires at least: 4.0
 Tested up to: 4.4
-Stable tag: 3.0.1
+Stable tag: 3.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ Add Google Calendar events to your WordPress site in minutes. Beautiful calendar
 
 == Description ==
 
-**Simple Calendar** is the easiest way to add Google Calendar events to your WordPress site. Keep managing everything in Google Calendar. Fine tune the display of your calendars to your liking. Add advanced features with add-ons.
+[Simple Calendar](https://simplecalendar.io) is the easiest way to add Google Calendar events to your WordPress site. Keep managing everything in Google Calendar. Fine tune the display of your calendars to your liking. Add advanced features with add-ons.
 
 = SIMPLE CALENDAR FEATURES =
 
@@ -23,11 +23,11 @@ Add Google Calendar events to your WordPress site in minutes. Beautiful calendar
 * Combine multiple calendars into single displays explicitly or using categories.
 * Intuitive admin settings for simple configuration changes.
 * Advanced settings to adjust time zones, date/time formats and start of the week.
-* Many translations available with more being added on a regular basis. [Translations welcome!](https://wordpress.org/support/topic/translating-this-plugin-in-your-language)
+* Many translations available with more being added on a regular basis. [Translations welcome!](https://translate.wordpress.org/projects/wp-plugins/google-calendar-events)
 * Fully extensible to support add-ons with advanced features for more specific needs.
 * Open source with code hosted on GitHub. [Contributions welcome!](https://github.com/moonstonemedia/Simple-Calendar)
 
->**[Love our plugin? Please consider purchasing our Google Calendar Pro add-on](https://simplecalendar.io/addons/google-calendar-pro/?utm_source=wordpress.org&utm_medium=link&utm_campaign=simple-cal-readme&utm_content=description)**
+>**[Love the plugin? Please consider purchasing our Google Calendar Pro add-on](https://simplecalendar.io/addons/google-calendar-pro/?utm_source=wordpress.org&utm_medium=link&utm_campaign=simple-cal-readme&utm_content=description)**
 
 = GOOGLE CALENDAR PRO ADD-ON FEATURES =
 
@@ -60,27 +60,74 @@ Find our docs at [docs.simplecalendar.io](http://docs.simplecalendar.io/?utm_sou
 
 We'd love your help! Here's a few things you can do:
 
+* [Rate our plugin](https://wordpress.org/support/view/plugin-reviews/google-calendar-events?postform#postform) and help spread the word!
 * Help answer questions in our [community support forum](https://wordpress.org/support/plugin/google-calendar-events).
 * Report bugs (with steps to reproduce) or submit pull requests [on GitHub](https://github.com/moonstonemedia/Simple-Calendar).
-* Help add or update a [plugin translation](https://wordpress.org/support/topic/translating-this-plugin-in-your-language).
+* Help add or update a [plugin translation](https://translate.wordpress.org/projects/wp-plugins/google-calendar-events).
 
 == Screenshots ==
 
-1. Default Calendar List on Twenty Fifteen theme.
-2. Default Calendar Grid on Twenty Fifteen theme.
-3. Calendar settings dashboard.
-4. Calendar appearance settings.
-5. Google Calendar events source settings.
-6. Attach calendar to a post or page.
-7. Add a calendar widget.
-8. Plugin settings.
+1. Basic Grid view
+2. Basic List view
+3. Calendar settings - Events
+4. Calendar settings - Appearance
+5. Calendar settings - Google Calendar
+6. Calendar settings - Advanced
+7. Add a calendar widget
+8. Attach a calendar to a post or page
 
 == Changelog ==
 
+= 3.0.8 - December 1, 2015 =
+
+* Fix: Fixed bug for Google Calendar Pro add-on organizer event builder code.
+* Fix: Fixed some inconsistencies with all-day events and multi-day events when combined.
+
+= 3.0.7 - November 28, 2015 =
+
+* Fix: Fixed all day multi-day events showing on an extra day.
+* Fix: Fixed multi-day events that span less than 24 hours to show up on both days.
+* Fix: Fixed multi-day events that span 2 days to show up correctly.
+* Fix: Fixed issues with grouped calendars using categories not loading.
+* Tweak: Additional empty check for previous array_combine PHP error.
+* Tweak: Remove extra qtip triangle image from popup.
+
+= 3.0.6 - November 24, 2015 =
+
+* Fix: Fixed bug with days being off by one day.
+* Fix: Added check for array to avoid array_combine() PHP error.
+* Fix: Allow last list event to show correctly.
+* Tweak: Update shortcode to not check for a singular page.
+
+= 3.0.5 - November 19, 2015 =
+
+* Fix: Fixed a bug where HTML in event description was not being rendered properly.
+* Fix: Fixed a script loading issue when using the CPT view.
+* Feature: Check for required PHP extensions upon plugin activation (curl and mbstring so far).
+
+= 3.0.4 - November 18, 2015 =
+
+* Fix: Fixed always enqueue option to work correctly.
+* Fix: Fixed issue where multiple shortcodes would sometimes not load scripts correctly.
+* Fix: Fixed z-index issue for admin tooltips.
+* Tweak: Change default "today" color to blue (#1e73be).
+
+= 3.0.3 - November 13, 2015 =
+
+* Feature: Added option to display a compact list view.
+* Feature: Added option to hide the header in list view.
+* Tweak: Improved CSS styling for default list and grid CSS.
+
+= 3.0.2 - November 12, 2015 =
+
+* Fix: Fixed bug where calendar days were off by one day.
+
 = 3.0.1 - November 9, 2015 =
-* Fix: Fixed a bug with the update script being skipped via attachment to activation hook.
+
+* Fix: Fixed bug with update script being skipped via attachment to activation hook.
 
 = 3.0.0 - November 8, 2015 =
+
 * Announcement: Plugin renamed to Simple Calendar.
 * Announcement: Visit our new website at [simplecalendar.io](https://simplecalendar.io/?utm_source=wordpress.org&utm_medium=link&utm_campaign=simple-cal-readme&utm_content=changelog)!
 * Feature: Modular and extensible plugin, add-ons ready.
@@ -96,37 +143,46 @@ We'd love your help! Here's a few things you can do:
 * Refactor: Plugin rebuilt from ground up: namespaces, closures, Composer support, entirely OOP.
 * Dev: PHP 5.3 minimum required.
 * Dev: All requests to Google from now on will be handled with the official Google API PHP Client.
+* Dev: Tested up to WordPress 4.4.
 
 = 2.4.0 - September 29, 2015 =
+
 * Announcement: Simple Calendar is coming, changes ahead.
 * Deprecation: The bundled/default Google API key reached it's quota and was shut off. Using your own API key is now required.
 
 = 2.3.2 - September 1, 2015 =
+
 * Fix: Bug in HTML support in events description.
 
 = 2.3.1 - August 31, 2015 =
+
 * Fix: Fallback for DateTime::setTimestamp() for installations still using PHP 5.2.
 * Fix: Support HTML in events description when using `html="true"` attribute in shortcode.
 * Localization: Added Finnish translations, courtesy of Ville Myllymäki.
 
 = 2.3.0 - August 24, 2015 =
+
 * Fix: Improve timezone handling when sending a request to Google.
 * Tweak: Reintroduced imagesloaded library to improve compatibility with themes using Isotope and Masonry.
 
 = 2.2.91 - August 18, 2015 =
+
 * Fix: Calendar not working correctly with custom date range grid after 2.2.9 changes.
 
 = 2.2.9 - August 14, 2015 =
+
 * Fix: Event links pointing to Google Calendar have a timezone argument from feed setting.
 * Fix: Improved assets loading, only load scripts on posts and pages that have a calendar.
 * Localization: Updated Norwegian translations.
 
 = 2.2.8 - August 7, 2015 =
+
 * Fix: Improved security when saving plugin settings.
 * Fix: Added URL encoding to fix some issues with API keys containing special characters.
 * Tweak: Use calendar feed timezone or website timezone (default calendar).
 
 = 2.2.7 - July 31, 2015 =
+
 * Feature: Added an 'Add Calendar' button to quickly add a shortcode in posts.
 * Fix: Reverted register scripts hook to init.
 * Localization: Updated French translations.
@@ -136,6 +192,7 @@ We'd love your help! Here's a few things you can do:
 * Tweak: Added a clear cache bulk action for clearing caches of multiple feeds.
 
 = 2.2.6 - July 16, 2015 =
+
 * Plugin performs a requirements check to ensure users are running a recent version of WordPress.
 * Added '.gce-has-<n>-events' class to count events in each day in grid display.
 * Removed unnecessary imagesLoaded JS library (optional dependency of the qTip2 library).
@@ -148,17 +205,20 @@ We'd love your help! Here's a few things you can do:
 * Tested up to WordPress 4.3.
 
 = 2.2.5 - April 22, 2015 =
+
 * Updated calls to add_query_arg to prevent any possible XSS attacks.
 * Fixed bug with fatal error in rare cases by rearragning order of plugin file includes.
 * Fixed bug with navigation links sometimes returning -1.
 * Corrected typo with paging links title attributes.
 
 = 2.2.4 - April 6, 2015 =
+
 * Updated French translation files.
 * Fixed Catalan translation files.
 * Fixed encoding bug with [maps-link] new window attribute.
 
 = 2.2.3 - March 26, 2015 =
+
 * Fixed bug with the "More details..." link encoding.
 * Added note about total event limit of 2,500 now enforced by the Google Calendar API.
 * Updated earliest feed event date default to 1 (one) month back.
@@ -169,9 +229,11 @@ We'd love your help! Here's a few things you can do:
 * Tested up to WordPress 4.2.
 
 = 2.2.2.1 - March 17, 2015 =
+
 * Option to always enqueue scripts & styles now enabled by default.
 
 = 2.2.2 - March 15, 2015 =
+
 * Added option to always enqueue scripts and styles on every post and page.
 * Added custom date range grid option to display modes.
 * Added option to disable the plugin CSS file.
@@ -180,12 +242,14 @@ We'd love your help! Here's a few things you can do:
 * Minor public JavaScript performance updates.
 
 = 2.2.1 - February 28, 2015 =
+
 * Enqueue scripts & styles on all posts & pages temporarily until better detection can be put in place.
 * Fixed GCal ID encoding in feed settings.
 * Updated Italian translation.
 * Updated French translation.
 
 = 2.2.0 - February 25, 2015 =
+
 * Added custom date range options.
 * Added option to hide tooltips on grid display.
 * Added additional save button at the bottom of the feed settings.
@@ -203,13 +267,16 @@ We'd love your help! Here's a few things you can do:
 * Security improvements.
 
 = 2.1.7 - December 14, 2014 =
+
 * Restructured next and back paging navigation script.
 * Updated Italian translation files.
 
 = 2.1.6.1 - December 5, 2014 =
+
 * More tooltip (qTip2) effects & styling.
 
 = 2.1.6 - December 5, 2014 =
+
 * Fixed bug with tooltip (qTip2) in some cases by now including it's imagesLoaded script.
 * Tooltip style improvements.
 * Tooltip minified JS map file now included.
@@ -219,9 +286,11 @@ We'd love your help! Here's a few things you can do:
 * Fix bug when saving a bulk edit.
 
 = 2.1.5 - December 2, 2014 =
+
 * Updated jQuery tooltip library to [qTip2](http://qtip2.com/). Previously using unmaintained original qTip library.
 
 = 2.1.4 - November 26, 2014 =
+
 * Reverted CSS enqueue change.
 * Added Catalan translation - Provided by Toni Ginard & Monica Grau of [agora.xtec.cat](http://agora.xtec.cat/).
 * Updated AJAX security code.
@@ -230,12 +299,14 @@ We'd love your help! Here's a few things you can do:
 * Tested up to WordPress 4.1.
 
 = 2.1.3 - November 23, 2014 =
+
 * Only load plugin scripts and stylesheets when the viewable page is rendering output from this plugin.
 * Fixed bugs with simple display options.
 * Added better error checking and output options to help in debugging GCal feeds.
 * Added Dutch translation - Provided by Henri van Werkhoven.
 
 = 2.1.2 - November 21, 2014 =
+
 * Fixed bug with quick edit clearing out feed settings.
 * Fix bug with pagination creating extra DOM elements.
 * Localization string fixes - Pull Request by @Jojaba
@@ -244,16 +315,20 @@ We'd love your help! Here's a few things you can do:
 * Add in post data resets.
 
 = 2.1.1 - November 20, 2014 =
+
 * Fixed bug with all day events not displaying.
 * Added missing timezone parameter to internal query.
 
 = 2.1.0 - November 19, 2014 =
+
 * Updated to use Google Calendar API version 3. Version 2 deprecated on Nov. 17, 2014.
 
 = 2.0.7.1 -November 17, 2014 =
+
 * As of Nov. 17, 2014 the GCal API v2 is deprecated, which breaks all calendar feed displays. This update will temporarily hide the display while we work on a solution that uses GCal API v3.
 
 = 2.0.7 - October 28, 2014 =
+
 * Events will now display if it hasn't ended yet for list views.
 * Fixed bug with date() call causing a display error in some cases.
 * Fixed bug with with widget tooltip text display.
@@ -264,9 +339,11 @@ We'd love your help! Here's a few things you can do:
 * Added Lithuanian translation - Provided by Andrius Mazeika of [mazeika.info](http://mazeika.info/).
 
 = 2.0.6.2 - October 22, 2014 =
+
 * Reverted previous bug fix that introduced new bugs.
 
 = 2.0.6.1 - October 22, 2014 =
+
 * Added Polish translation - Provided by Michał Pasternak of [iplweb.pl](http://iplweb.pl/).
 * Updated Italian translation.
 * Updated French translation.
@@ -274,14 +351,17 @@ We'd love your help! Here's a few things you can do:
 * Minor bug fixes.
 
 = 2.0.6 - October 16, 2014 =
+
 * Added minimum and maximum feed date options to fix event display issues and boost performance.
 * Fixed a caching issue to increase performance.
 * Fixed bug where backslashes kept getting added to event titles that already contained single quotes when navigating through pages in widget.
 
 = 2.0.5.1 - October 15, 2014 =
+
 * Fix timezone issue.
 
 = 2.0.5 - October 10, 2014 =
+
 * Fixed display bug with event date and grouped lists.
 * Fixed broken paging links when feed IDs contain spaces between them.
 * Fixed bug with start offset and grouped lists not working properly.
@@ -290,6 +370,7 @@ We'd love your help! Here's a few things you can do:
 * Added Norwegian translation - Provided by Tore Hjartland of [aliom.no](http://www.aliom.no/).
 
 = 2.0.4 - October 7, 2014 =
+
 * Added option to show/hide paging.
 * Added option to limit display to any number of days or events per page.
 * Added option to set the start date offset any number of days back or ahead (list view).
@@ -313,28 +394,34 @@ We'd love your help! Here's a few things you can do:
 * Remove unused admin script file.
 
 = 2.0.3.1 - October 7, 2014=
+
 * Fixed bug where retrieve from/until dates were accidentally removed.
 
 = 2.0.3 - September 20, 2014 =
+
 * Fixed bug where calendar feed caches weren't getting cleared properly.
 * Fixed feed settings metabox content wrapping issue.
 
 = 2.0.2 - September 17, 2014 =
+
 * Added Spanish translation - Provided by Eduardo Larequi of [educacion.navarra.es/web/pnte/](http://www.educacion.navarra.es/web/pnte/).
 * Fixed timezone issues by forcing calendar feeds to use the timezone selected in the site's General Settings. Feed-specific timezone setting removed.
 * Fixed a bug with recurring events display.
 * Fixed an upgrade bug with multiple day events.
 
 = 2.0.1 - September 11, 2014 =
+
 * Fixed display errors with certain event builder shortcodes.
 * Added language folder.
 
 = 2.0.0 - September 9, 2014 =
+
 * Plugin rewritten from scratch.
 * Now using custom post types for storing and customizing Google calendar feeds.
 * Introduced the shortcode `[gcal]` (old shortcode still supported).
 
 == Upgrade Notice ==
 
-= 3.0.0 = 
+= 3.0.0 =
+
 This is a major rewrite of the plugin with lots of additions and changes. Please backup before proceeding.
