@@ -1,0 +1,26 @@
+# Force SSL
+RewriteEngine On
+RewriteCond %{HTTPS} ^off$ [NC]
+RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [L,R=301,NE,QSA]
+
+# Shibboleth quick-exit
+RewriteEngine on
+RewriteCond %{REQUEST_URI} ^/Shibboleth.sso($|/)
+RewriteRule . - [L]
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+# BEGIN Shibboleth
+AuthType Shibboleth
+Require Shibboleth
+# END Shibboleth
