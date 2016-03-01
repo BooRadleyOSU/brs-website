@@ -21,3 +21,6 @@ wp-content/gallery/*
 
 # Ignore default themes
 wp-content/themes/twenty*/
+
+# Remove non-relevant pages
+readme.html
