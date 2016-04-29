@@ -453,7 +453,7 @@ class WSAL_Settings {
             $result = $this->GetClientIPs();
             $result = reset($result);
             $result = isset($result[0]) ? $result[0] : null;
-        } elseif(isset($_SERVER['REMOTE_ADDR'])) {
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
             $result = $this->NormalizeIP($_SERVER['REMOTE_ADDR']);
             if (!$this->ValidateIP($result)) {
                 $result = "Error " . self::ERROR_CODE_INVALID_IP . ": Invalid IP Address";
@@ -581,6 +581,18 @@ class WSAL_Settings {
         return $this->_plugin->SetGlobalOption('datetime-format', $newvalue);
     }
 
+    /**
+     * Alerts Timestamp
+     * Server's timezone or WordPress' timezone
+     */
+    public function GetTimezone(){
+        return $this->_plugin->GetGlobalOption('timezone', 0);
+    }
+
+    public function SetTimezone($newvalue){
+        return $this->_plugin->SetGlobalOption('timezone', $newvalue);
+    }
+
     public function GetAdapterConfig($name_field){
         return $this->_plugin->GetGlobalOption($name_field);
     }
@@ -594,7 +606,6 @@ class WSAL_Settings {
         if ($this->_plugin->IsMultisite()) {
             $columns = array_slice($columns, 0, 5, true) + array('site' => '1') + array_slice($columns, 5, null, true);
         }
-        error_log(print_r($columns, true));
         $selected = $this->GetColumnsSelected();
         if (!empty($selected)) {
             $columns = array('alert_code' => '0', 'type' => '0', 'date' => '0', 'username' => '0', 'source_ip' => '0', 'message' => '0');

@@ -9,11 +9,12 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
             add_action('admin_init', array($this, 'EventWordpressInit'));
         }
         add_action('transition_post_status', array($this, 'EventPostChanged'), 10, 3);
-        add_action('post_updated', array($this, 'CheckModificationChange'), 10, 3);
         add_action('delete_post', array($this, 'EventPostDeleted'), 10, 1);
         add_action('wp_trash_post', array($this, 'EventPostTrashed'), 10, 1);
         add_action('untrash_post', array($this, 'EventPostUntrashed'));
         add_action('edit_category', array($this, 'EventChangedCategoryParent'));
+        add_action('save_post', array($this, 'SetRevisionLink'), 10, 3);
+        add_action('publish_future_post', array($this, 'EventPublishFuture'), 10, 1);
     }
     
     protected function GetEventTypeForPostType($post, $typePost, $typePage, $typeCustom)
@@ -106,10 +107,12 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
         ));
         // run checks
         if ($this->_OldPost) {
+            if ($this->CheckBBPress($this->_OldPost)) {
+                return;
+            }
             if ($oldStatus == 'auto-draft' || $original == 'auto-draft') {
                 // Handle create post events
                 $this->CheckPostCreation($this->_OldPost, $post);
-                
             } else {
                 // Handle update post events
                 $changes = 0
@@ -124,6 +127,9 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
                 if (!$changes) {
                     $changes = $this->CheckPermalinkChange($this->_OldLink, get_permalink($post->ID), $post);
                 }
+                if (!$changes) {
+                    $changes = $this->CheckModificationChange($post->ID, $this->_OldPost, $post);
+                }
             }
         }
     }
@@ -131,6 +137,7 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
     protected function CheckPostCreation($oldPost, $newPost)
     {
         $event = 0;
+        $is_scheduled = false;
         switch ($newPost->post_status) {
             case 'publish':
                 $event = $this->GetEventTypeForPostType($oldPost, 2001, 2005, 2030);
@@ -138,16 +145,43 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
             case 'draft':
                 $event = $this->GetEventTypeForPostType($oldPost, 2000, 2004, 2029);
                 break;
+            case 'future':
+                $event = $this->GetEventTypeForPostType($oldPost, 2074, 2075, 2076);
+                $is_scheduled = true;
+                break;
             case 'pending':
                 $event = 2073;
                 break;
         }
         if ($event) {
+            if ($is_scheduled) {
+                $this->plugin->alerts->Trigger($event, array(
+                    'PostType' => $newPost->post_type,
+                    'PostTitle' => $newPost->post_title,
+                    'PublishingDate' => $newPost->post_date
+                ));
+            } else {
+                $this->plugin->alerts->Trigger($event, array(
+                    'PostID' => $newPost->ID,
+                    'PostType' => $newPost->post_type,
+                    'PostTitle' => $newPost->post_title,
+                    'PostUrl' => get_permalink($newPost->ID)
+                ));
+            }
+        }
+    }
+
+    public function EventPublishFuture($post_id)
+    {
+        $post = get_post($post_id);
+        $event = $this->GetEventTypeForPostType($post, 2001, 2005, 2030);
+        
+        if ($event) {
             $this->plugin->alerts->Trigger($event, array(
-                'PostID' => $newPost->ID,
-                'PostType' => $newPost->post_type,
-                'PostTitle' => $newPost->post_title,
-                'PostUrl' => get_permalink($newPost->ID),
+                'PostID' => $post->ID,
+                'PostType' => $post->post_type,
+                'PostTitle' => $post->post_title,
+                'PostUrl' => get_permalink($post->ID)
             ));
         }
     }
@@ -209,7 +243,10 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
     public function EventPostDeleted($post_id)
     {
         $post = get_post($post_id);
-        if (!in_array($post->post_type, array('attachment', 'revision'))) { // ignore attachments and revisions
+        if ($this->CheckBBPress($post)) {
+            return;
+        }
+        if (!in_array($post->post_type, array('attachment', 'revision', 'nav_menu_item'))) { // ignore attachments, revisions and menu items
             $event = $this->GetEventTypeForPostType($post, 2008, 2009, 2033);
             // check WordPress backend operations
             if ($this->CheckAutoDraft($event, $post->post_title)) {
@@ -226,6 +263,9 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
     public function EventPostTrashed($post_id)
     {
         $post = get_post($post_id);
+        if ($this->CheckBBPress($post)) {
+            return;
+        }
         $event = $this->GetEventTypeForPostType($post, 2012, 2013, 2034);
         $this->plugin->alerts->Trigger($event, array(
             'PostID' => $post->ID,
@@ -237,6 +277,9 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
     public function EventPostUntrashed($post_id)
     {
         $post = get_post($post_id);
+        if ($this->CheckBBPress($post)) {
+            return;
+        }
         $event = $this->GetEventTypeForPostType($post, 2014, 2015, 2035);
         $this->plugin->alerts->Trigger($event, array(
             'PostID' => $post->ID,
@@ -250,11 +293,11 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
         $from = strtotime($oldpost->post_date);
         $to = strtotime($newpost->post_date);
         if ($oldpost->post_status == 'draft') {
-            return;
+            return 0;
         }
         $pending = $this->CheckReviewPendingChange($oldpost, $newpost);
         if ($pending) {
-            return;
+            return 0;
         }
         if ($from != $to) {
             $event = $this->GetEventTypeForPostType($oldpost, 2027, 2028, 2041);
@@ -269,18 +312,14 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
         }
     }
 
+    // Revision used
     protected function CheckReviewPendingChange($oldpost, $newpost)
     {
         if ($oldpost->post_status == 'pending') {
-            $revisions = wp_get_post_revisions($newpost->ID, ARRAY_A);
-            if (!empty($revisions)) {
-                $revision = array_shift($revisions);
-            }
             $this->plugin->alerts->Trigger(2072, array(
                 'PostID' => $oldpost->ID,
                 'PostType' => $oldpost->post_type,
-                'PostTitle' => $oldpost->post_title,
-                'RevisionLink' =>  (!empty($revision)) ? $this->getRevisionLink($revision->ID) : null
+                'PostTitle' => $oldpost->post_title
             ));
             return 1;
         }
@@ -451,9 +490,13 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
         }
     }
     
-    public function CheckModificationChange($post_ID, $newpost, $oldpost)
+    public function CheckModificationChange($post_ID, $oldpost, $newpost)
     {
-        $changes = 0 + $this->CheckDateChange($oldpost, $newpost);
+        if ($this->CheckBBPress($oldpost)) {
+            return;
+        }
+        $changes = 0 + $this->CheckDateChange($oldpost, $newpost)
+            + $this->CheckTitleChange($oldpost, $newpost);
         if (!$changes) {
             $contentChanged = $oldpost->post_content != $newpost->post_content; // TODO what about excerpts?
             
@@ -477,17 +520,13 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
                         break;
                 }
                 if ($event) {
-                    $revisions = wp_get_post_revisions($post_ID, ARRAY_A);
-                    if (!empty($revisions)) {
-                        $revision = array_shift($revisions);
-                    }
                     $this->plugin->alerts->Trigger($event, array(
                         'PostID' => $post_ID,
                         'PostType' => $oldpost->post_type,
                         'PostTitle' => $oldpost->post_title,
-                        'PostUrl' => get_permalink($post_ID), // TODO or should this be $newpost?
-                        'RevisionLink' =>  (!empty($revision)) ? $this->getRevisionLink($revision->ID) : null
+                        'PostUrl' => get_permalink($post_ID) // TODO or should this be $newpost?
                     ));
+                    return 1;
                 }
             }
         }
@@ -542,5 +581,55 @@ class WSAL_Sensors_Content extends WSAL_AbstractSensor
         } else {
             return null;
         }
+    }
+
+    /**
+     * Ignore post from BBPress Plugin,
+     * Triggered on the BBPress Sensor
+     */
+    private function CheckBBPress($post)
+    {
+        switch ($post->post_type) {
+            case 'forum':
+            case 'topic':
+            case 'reply':
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Triggered after save post for add revision link
+     */
+    public function SetRevisionLink($post_id, $post, $update)
+    {
+        $revisions = wp_get_post_revisions($post_id);
+        if (!empty($revisions)) {
+            $revision = array_shift($revisions);
+
+            $objOcc = new  WSAL_Models_Occurrence();
+            $occ = $objOcc->GetByPostID($post_id);
+            $occ = count($occ) ? $occ[0] : null;
+            if (!empty($occ)) {
+                $revisionLink = $this->getRevisionLink($revision->ID);
+                if (!empty($revisionLink)) {
+                    $occ->SetMetaValue('RevisionLink', $revisionLink);
+                }
+            }
+        }
+    }
+
+    private function CheckTitleChange($oldpost, $newpost)
+    {
+        if ($oldpost->post_title != $newpost->post_title) {
+            $event = $this->GetEventTypeForPostType($newpost, 2086, 2087, 2088);
+            $this->plugin->alerts->Trigger($event, array(
+                'OldTitle' => $oldpost->post_title,
+                'NewTitle' => $newpost->post_title,
+            ));
+            return 1;
+        }
+        return 0;
     }
 }
