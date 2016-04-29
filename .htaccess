@@ -21,6 +21,6 @@ RewriteRule . /index.php [L]
 # END WordPress
 
 # BEGIN Shibboleth
-AuthType Shibboleth
-Require Shibboleth
+AuthType shibboleth
+Require shibboleth
 # END Shibboleth
