@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'xrstf\\Composer52' => array($vendorDir . '/xrstf/composer-php52/lib'),
     'Parsedown' => array($vendorDir . '/erusev/parsedown'),
-    '' => array($vendorDir . '/nekojira/wp-requirements/src'),
+    'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src'),
 );
