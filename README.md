@@ -50,7 +50,7 @@ You've come to the right place. Here is a short list of the technologies that yo
 
 ### I found a problem.
 
-If you find something wrong with the website you should go to [the issues page](https://github.com/BooRadleyOSU/brs-website/issues)and create an issue so that we have a record of your problem. If your problem isn't in the issue tracker it doesn't exist and we make no guarantees that we will remember it.
+If you find something wrong with the website you should go to [the issues page](https://github.com/BooRadleyOSU/brs-website/issues) and create an issue so that we have a record of your problem. If your problem isn't in the issue tracker it doesn't exist and we make no guarantees that we will remember it.
 
 ### I fixed the problem.
 
